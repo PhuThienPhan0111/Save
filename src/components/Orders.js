@@ -10,7 +10,16 @@ constructor(props) {
 componentDidMount() {
     this.SetItems();
 }
-
+async SetItems() {
+    const response = await fetch("https://localhost:44315/api/orders", {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+        },
+      });
+    const data = await response.json();
+    this.setState({ items: data, loading: false });
+}
 static RenderTable(items) {
     if (!items.checkData) {
         return (
@@ -78,11 +87,5 @@ render() {
             </div>
         </div>
     );
-}
-
-async SetItems() {
-    const response = await fetch("api/orders/GetOrders")
-    const data = await response.json();
-    this.setState({ items: data, loading: false });
 }
 }

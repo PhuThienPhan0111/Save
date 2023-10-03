@@ -8,7 +8,16 @@ export class Customers extends Component {
     componentDidMount() {
         this.SetItems();
     }
-
+    async SetItems() {
+        const response = await fetch("https://localhost:44315/api/customers", {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+            },
+          });
+        const data = await response.json();
+        this.setState({ items: data, loading: false });
+    }
     static RenderTable(items) {
         const limit = 30;
         if (items.length < limit) {
@@ -48,8 +57,6 @@ export class Customers extends Component {
         let contents = this.state.loading
             ? <p><em>Đang tải...</em></p>
             : Customers.RenderTable(this.state.items);
-
-        let dialogClose = () => this.setState({ dialogShow: false });
         return (
             <div className="container">
                 <div>
@@ -62,9 +69,5 @@ export class Customers extends Component {
         );
     }
 
-    async SetItems() {
-        const response = await fetch("api/customers/GetCustomers")
-        const data = await response.json();
-        this.setState({ items: data, loading: false });
-    }
+
 }

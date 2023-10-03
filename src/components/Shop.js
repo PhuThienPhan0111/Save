@@ -8,7 +8,16 @@ export class Shop extends Component {
     componentDidMount() {
         this.SetItems();
     }
-
+    async SetItems() {
+        const response = await fetch("https://localhost:44315/api/shop", {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+            },
+          });
+        const data = await response.json();
+        this.setState({ items: data, loading: false });
+    }
     static RenderTable(items) {
         const limit = 3;
         if (items.length < limit) {
@@ -54,11 +63,5 @@ export class Shop extends Component {
                 </div>
             </div>
         );
-    }
-
-    async SetItems() {
-        const response = await fetch("api/shop/GetShop")
-        const data = await response.json();
-        this.setState({ items: data, loading: false });
     }
 }
